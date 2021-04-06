@@ -33,7 +33,7 @@ BIN2S = $(PS2SDK)/bin/bin2s
 all: githash.h $(EE_BIN_PKD)
 
 $(EE_BIN_PKD): $(EE_BIN)
-	ps2-packer $< $@
+	cp $< $@
 
 run: all
 	ps2client -h 192.168.0.10 -t 1 execee host:$(EE_BIN)
