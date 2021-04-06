@@ -34,6 +34,7 @@ all: githash.h $(EE_BIN_PKD)
 
 $(EE_BIN_PKD): $(EE_BIN)
 	cp $< $@
+	
 
 run: all
 	ps2client -h 192.168.0.10 -t 1 execee host:$(EE_BIN)
