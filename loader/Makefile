@@ -4,7 +4,7 @@ EE_ASFLAGS += -EL -G0
 ###dlanor: adjust these three, for PS2Link compatibility tests
 ###dlanor: old LaunchELF used LA=0x90000, SA=0xB0000, SS=0x08000
 ###dlanor: The values below were implemented in LaunchELF v3.50
-LOADADDR  = 0x90000
+LOADADDR  = 0x01000000
 STACKADDR = 0xA8000
 STACKSIZE = 0x04000
 
