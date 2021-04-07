@@ -20,10 +20,6 @@ EE_INCS := -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
 
 EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -s -Ttext 0x01000000 \
 	-Wl,--gc-sections,-r,-d
-
-$(EE_BIN_PKD): $(EE_BIN)
-		$(EE_OBJCOPY) -O binary --strip-unneeded -R .note -R .comment -R .note.gnu.build-id -R .reginfo -R .rel.dyn -R .note.gnu.gold-version $< $@;
-
 EE_LIBS = -lgskit -ldmakit -ljpeg -lpad -lmc -lhdd -lkbd -lm \
 	-lcdvd -lfileXio -lpatches -lpoweroff -ldebug -lsior
 EE_CFLAGS := -mno-gpopt -G0
@@ -37,6 +33,9 @@ BIN2S = $(PS2SDK)/bin/bin2s
 .PHONY: all run reset clean rebuild format format-check
 
 all: githash.h $(EE_BIN)
+
+$(EE_BIN_PKD): $(EE_BIN)
+		$(EE_OBJCOPY) -O binary --strip-unneeded -R .note -R .comment -R .note.gnu.build-id -R .reginfo -R .rel.dyn -R .note.gnu.gold-version $< $@;
 
 run: all
 	ps2client -h 192.168.0.10 -t 1 execee host:$(EE_BIN)
