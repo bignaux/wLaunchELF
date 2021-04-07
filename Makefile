@@ -32,7 +32,7 @@ BIN2S = $(PS2SDK)/bin/bin2s
 
 .PHONY: all run reset clean rebuild format format-check
 
-all: githash.h $(EE_BIN)
+all: githash.h $(EE_BIN_PKD)
 
 $(EE_BIN_PKD): $(EE_BIN)
 		$(EE_OBJCOPY) -O binary --strip-unneeded -R .note -R .comment -R .note.gnu.build-id -R .reginfo -R .rel.dyn -R .note.gnu.gold-version $< $@;
