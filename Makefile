@@ -17,7 +17,7 @@ endif
 
 EE_INCS := -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
 
-EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -s -Ttext 0x01000000
+EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -s -Ttext 0x01000000 --gc-sections
 EE_LIBS = -lgskit -ldmakit -ljpeg -lpad -lmc -lhdd -lkbd -lm \
 	-lcdvd -lfileXio -lpatches -lpoweroff -ldebug -lsior
 EE_CFLAGS := -mno-gpopt -G0
