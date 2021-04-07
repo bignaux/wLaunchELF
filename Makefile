@@ -3,8 +3,9 @@
 SMB = 0
 #set SMB to 1 to build uLe with smb support
 
-EE_BIN = BOOT-UNC.ELF
-EE_BIN_PKD = BOOT.ELF
+EE_BIN = BOOT-UNC.BIN
+EE_BIN_PKD = BOOT.BIN
+
 EE_OBJS = main.o pad.o config.o elf.o draw.o loader_elf.o filer.o \
 	poweroff_irx.o iomanx_irx.o filexio_irx.o ps2atad_irx.o ps2dev9_irx.o ps2ip_irx.o\
 	ps2smap_irx.o ps2hdd_irx.o ps2fs_irx.o ps2netfs_irx.o usbd_irx.o usbhdfsd_irx.o mcman_irx.o mcserv_irx.o\
@@ -17,7 +18,12 @@ endif
 
 EE_INCS := -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
 
-EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -s -Ttext 0x01000000 -Wl,--gc-sections
+EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -s -Ttext 0x01000000 \
+	-Wl,--gc-sections,-r,-d
+
+$(EE_BIN_PKD): $(EE_BIN)
+		$(EE_OBJCOPY) -O binary --strip-unneeded -R .note -R .comment -R .note.gnu.build-id -R .reginfo -R .rel.dyn -R .note.gnu.gold-version $< $@;
+
 EE_LIBS = -lgskit -ldmakit -ljpeg -lpad -lmc -lhdd -lkbd -lm \
 	-lcdvd -lfileXio -lpatches -lpoweroff -ldebug -lsior
 EE_CFLAGS := -mno-gpopt -G0
@@ -30,12 +36,7 @@ BIN2S = $(PS2SDK)/bin/bin2s
 
 .PHONY: all run reset clean rebuild format format-check
 
-all: githash.h $(EE_BIN_PKD)
-	$(EE_STRIP) --strip-unneeded -R .mdebug.eabi64 -R .reginfo -R .comment $(EE_BIN_PKD)
-
-$(EE_BIN_PKD): $(EE_BIN)
-	cp $< $@
-
+all: githash.h $(EE_BIN)
 
 run: all
 	ps2client -h 192.168.0.10 -t 1 execee host:$(EE_BIN)
